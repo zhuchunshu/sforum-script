@@ -34,7 +34,7 @@ if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
     # 检查是否安装了docker-compose
     if ! command -v docker-compose >/dev/null 2>&1; then
         echo "未检测到docker-compose，正在安装docker-compose..."
-        curl -L https://ghproxy.com/https://github.com/docker/compose/releases/download/v2.19.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+        sudo curl -SL "https://ghproxy.com/https://github.com/docker/compose/releases/download/v2.19.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose > /usr/local/bin/docker-compose
         chmod +x /usr/local/bin/docker-compose
         echo "docker-compose安装完成"
     else
