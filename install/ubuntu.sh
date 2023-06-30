@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# 定义一些颜色编码
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
 # 生成随机端口号
 get_random_port() {
     while true; do
@@ -14,7 +19,7 @@ get_random_port() {
 read -p "是否要进行一键安装SForum？(y/n): " choice
 
 if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
-    echo "开始安装SForum..."
+    echo "${GREEN}开始安装SForum...${NC}"
     echo "开始更新apt源..."
     sudo apt-get update
 
@@ -71,7 +76,7 @@ if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
     # echo "生成的随机端口号：$random_port"
 
     # 下载docker-compose.yml 文件
-    read -p "是否需要国内服务器加速？(y/n): " server_location
+    read -p "${GREEN}是否需要国内服务器加速？(y/n):${NC} " server_location
     if [ "$server_location" == "y" ] || [ "$server_location" == "Y" ]; then
         wget https://gitee.com/zhuchunshu/SForum/raw/master/docker-compose.yml
     else
@@ -89,12 +94,13 @@ if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
 
     sleep 15  # 等待几秒钟以确保容器完全启动
 
-    echo "mysql容器名为：sforum_${i}-db-1"
-    echo "redis容器名为：sforum_${i}-redis-1"
-    echo "SForum容器名为：sforum_${i}-web-1"
-    echo "SForum 安装完成！"
+    echo "mysql容器名为：${GREEN}sforum_${i}-db-1${NC}"
+    echo "redis容器名为：${GREEN}sforum_${i}-redis-1${NC}"
+    echo "SForum容器名为：${GREEN}sforum_${i}-web-1${NC}"
+    echo "docker-compose.yml文件目录：${GREEN}/www/wwwroot/${sforum_dir}${NC}"
+    echo "${GREEN}SForum 安装完成！${GREEN}"
 
 else
-    echo "安装已取消"
+    echo "${RED}安装已取消${NC}"
     exit 1
 fi

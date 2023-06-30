@@ -1,9 +1,14 @@
 #!/bin/bash
 
+# 定义一些颜色编码
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
 # 生成随机端口号
 get_random_port() {
     while true; do
-        RANDOM_PORT=$(shuf -i "10000"-"65535" -n 1)
+        RANDOM_PORT=$(shuf -i 10000-65535 -n 1)
         if ! (netstat -lnt | awk -F"[ :]+" '$5 ~ "[0-9]+" {print $5}' | grep -q $RANDOM_PORT); then
             return $RANDOM_PORT
             break
@@ -14,7 +19,7 @@ get_random_port() {
 read -p "是否要进行一键安装SForum？(y/n): " choice
 
 if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
-    echo "开始安装SForum..."
+    echo "${GREEN}开始安装SForum...${NC}"
     echo "开始更新yum源..."
     sudo yum update -y
 
@@ -34,7 +39,7 @@ if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
     # 检查是否安装了docker-compose
     if ! command -v docker-compose >/dev/null 2>&1; then
         echo "未检测到docker-compose，正在安装docker-compose..."
-        curl -SL "https://ghproxy.com/https://github.com/docker/compose/releases/download/v2.19.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose > /usr/local/bin/docker-compose
+        sudo curl -SL "https://ghproxy.com/https://github.com/docker/compose/releases/download/v2.19.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose > /usr/local/bin/docker-compose
         chmod +x /usr/local/bin/docker-compose
         echo "docker-compose安装完成"
     else
@@ -46,7 +51,7 @@ if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
         sudo mkdir -p /www/wwwroot
         echo "/www/wwwroot目录创建成功"
     fi
-
+    
     # 进入/www/wwwroot目录
     cd /www/wwwroot
 
@@ -60,7 +65,7 @@ if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
     sforum_dir="SForum_$i"
     mkdir $sforum_dir
     echo "创建新目录：$sforum_dir"
-
+    
     # 进入新创建的SForum目录
     cd $sforum_dir
 
@@ -71,7 +76,7 @@ if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
     # echo "生成的随机端口号：$random_port"
 
     # 下载docker-compose.yml 文件
-    read -p "是否需要国内服务器加速？(y/n): " server_location
+    read -p "${GREEN}是否需要国内服务器加速？(y/n):${NC} " server_location
     if [ "$server_location" == "y" ] || [ "$server_location" == "Y" ]; then
         wget https://gitee.com/zhuchunshu/SForum/raw/master/docker-compose.yml
     else
@@ -89,12 +94,13 @@ if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
 
     sleep 15  # 等待几秒钟以确保容器完全启动
 
-    echo "mysql容器名为：sforum_${i}-db-1"
-    echo "redis容器名为：sforum_${i}-redis-1"
-    echo "SForum容器名为：sforum_${i}-web-1"
-    echo "SForum 安装完成！"
+    echo "mysql容器名为：${GREEN}sforum_${i}-db-1${NC}"
+    echo "redis容器名为：${GREEN}sforum_${i}-redis-1${NC}"
+    echo "SForum容器名为：${GREEN}sforum_${i}-web-1${NC}"
+    echo "docker-compose.yml文件目录：${GREEN}/www/wwwroot/${sforum_dir}${NC}"
+    echo "${GREEN}SForum 安装完成！${GREEN}"
 
 else
-    echo "安装已取消"
+    echo "${RED}安装已取消${NC}"
     exit 1
 fi
