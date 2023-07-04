@@ -67,8 +67,59 @@ if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
         echo -e "docker-compose已安装"
     fi
 
-    # 检查并创建/www/wwwroot目录，以及剩余的安装与设置步骤对所有的Linux发行版来说都是相同的。
-    # 在此省略以保持回答的简洁性。
+         # 检查并创建/www/wwwroot目录
+    if [ ! -d "/www/wwwroot" ]; then
+        sudo mkdir -p /www/wwwroot
+        echo -e "/www/wwwroot目录创建成功"
+    fi
+    
+    # 进入/www/wwwroot目录
+    cd /www/wwwroot
+
+    # 遍历查找新的SForum目录名
+    i=1
+    while [ -d "SForum_$i" ]; do
+        ((i++))
+    done
+
+    # 创建新的SForum目录
+    sforum_dir="SForum_$i"
+    mkdir $sforum_dir
+    echo -e "创建新目录：$sforum_dir"
+    
+    # 进入新创建的SForum目录
+    cd $sforum_dir
+
+    # 在这里添加SForum的安装代码
+    # 生成未被使用的4-5位随机端口号
+    get_random_port
+    random_port=$?
+    # echo -e "生成的随机端口号：$random_port"
+
+    # 下载docker-compose.yml 文件
+    read -p "${GREEN}是否需要国内服务器加速？(y/n):${NC} " server_location
+    if [ "$server_location" == "y" ] || [ "$server_location" == "Y" ]; then
+        wget https://gitee.com/zhuchunshu/SForum/raw/master/docker-compose.yml
+    else
+        wget https://raw.githubusercontent.com/zhuchunshu/SForum/master/docker-compose.yml
+    fi
+    # 修改docker-compose.yml文件，将端口映射替换为新生成的随机端口号
+    sed -i "s/- \"9501:9501/- \"${random_port}:9501/g" docker-compose.yml
+
+    # 执行docker-compose up -d 来启动容器
+    docker-compose up -d
+
+    echo -e "请为您的 SForum 实例配置反向代理，目标地址：http://127.0.0.1:${random_port}"
+    # 打印启动后的日志
+    echo -e "等待几秒钟，容器正在启动..."
+
+    sleep 15  # 等待几秒钟以确保容器完全启动
+
+    echo -e "mysql容器名为：${GREEN}sforum_${i}-db-1${NC}"
+    echo -e "redis容器名为：${GREEN}sforum_${i}-redis-1${NC}"
+    echo -e "SForum容器名为：${GREEN}sforum_${i}-web-1${NC}"
+    echo -e "docker-compose.yml文件目录：${GREEN}/www/wwwroot/${sforum_dir}${NC}"
+    echo -e "${GREEN}SForum 安装完成！${GREEN}"
 
 else
     echo -e "${RED}安装已取消${NC}"
