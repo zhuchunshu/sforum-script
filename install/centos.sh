@@ -40,7 +40,7 @@ if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
     if ! command -v docker >/dev/null 2>&1; then
         echo -e "未检测到Docker，正在安装Docker..."
         curl -fsSL https://get.docker.com -o get-docker.sh
-        sudo sh get-docker.sh && systemctl enable docker
+        sudo sh get-docker.sh && systemctl enable docker && systemctl restart docker
         rm -f get-docker.sh
         echo -e "Docker安装完成"
     else
