@@ -30,15 +30,18 @@ get_random_port() {
 read -p "是否要进行一键安装SForum？(y/n): " choice
 
 if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
-    echo -e "${GREEN}开始安装SForum...${NC}"
-    echo -e "开始更新apt源..."
-    sudo apt-get update
-
-    sudo apt-get install curl -y
-
+    
     # 检查是否安装了docker
     if ! command -v docker >/dev/null 2>&1; then
         echo -e "未检测到Docker，正在安装Docker..."
+        
+        echo -e "${GREEN}开始安装SForum...${NC}"
+        echo -e "开始更新apt源..."
+        sudo apt-get update
+
+        sudo apt-get install curl -y
+
+
         curl -fsSL https://get.docker.com -o get-docker.sh
         sudo sh get-docker.sh && systemctl enable docker && systemctl restart docker
         rm -f get-docker.sh

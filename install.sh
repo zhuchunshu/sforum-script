@@ -31,22 +31,23 @@ read -p "是否要进行一键安装SForum？(y/n): " choice
 
 if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
     echo -e "${GREEN}开始安装SForum...${NC}"
-    
-    # 检查包管理器类型，并安装必要的依赖
-    if command -v yum > /dev/null; then
-        echo -e "发现yum包管理器"
-        echo -e "开始更新yum源..."
-        sudo yum update -y
-        sudo yum install curl -y
-    elif command -v apt > /dev/null; then
-        echo -e "发现apt包管理器"
-        echo -e "开始更新apt源..."
-        sudo apt update -y
-        sudo apt install curl -y
-    fi
 
     # 检查与安装Docker的代码对于所有的Linux发行版来说都是相同的
     if ! command -v docker >/dev/null 2>&1; then
+    
+        # 检查包管理器类型，并安装必要的依赖
+        if command -v yum > /dev/null; then
+            echo -e "发现yum包管理器"
+            echo -e "开始更新yum源..."
+            sudo yum update -y
+            sudo yum install curl -y
+        elif command -v apt > /dev/null; then
+            echo -e "发现apt包管理器"
+            echo -e "开始更新apt源..."
+            sudo apt update -y
+            sudo apt install curl -y
+        fi
+
         echo -e "未检测到Docker，正在安装Docker..."
         curl -fsSL https://get.docker.com -o get-docker.sh
         sudo sh get-docker.sh
