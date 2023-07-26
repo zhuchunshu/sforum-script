@@ -92,7 +92,7 @@ if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
     # 下载docker-compose.yml 文件
     read -p "${GREEN}是否需要国内服务器加速？(y/n):${NC} " server_location
     if [ "$server_location" == "y" ] || [ "$server_location" == "Y" ]; then
-        wget https://gitee.com/zhuchunshu/SForum/raw/master/docker-compose.yml
+        wget https://ghproxy.com/https://raw.githubusercontent.com/zhuchunshu/SForum/master/docker-compose.yml
     else
         wget https://raw.githubusercontent.com/zhuchunshu/SForum/master/docker-compose.yml
     fi
