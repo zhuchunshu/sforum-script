@@ -14,8 +14,15 @@ for folder in /data/www/app/Plugins/*; do
     fi
 done
 
+rm -rf /data/www/app/Plugins/Core/src/Controller/WebSocket
+
 # 开始更新
 php CodeFec CodeFec:U
+
+echo -e "\033[31m 请无视上面信息，进程还在继续 \033[0m"
+echo -e "\033[31m 请无视上面信息，进程还在继续 \033[0m"
+echo -e "\033[31m 请无视上面信息，进程还在继续 \033[0m"
+echo -e "\033[31m 请无视上面信息，进程还在继续 \033[0m"
 
 # 更新完成
 composer update && composer dumpautoload -o
