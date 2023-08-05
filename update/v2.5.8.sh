@@ -25,7 +25,7 @@ echo -e "\033[31m 不要退出，请无视上面信息，进程还在继续 \033
 echo -e "\033[31m 不要退出，请无视上面信息，进程还在继续 \033[0m"
 
 # 更新完成
-composer update && composer dumpautoload -o
+composer update && composer du -o && composer dumpautoload -o
 
 ## 输出更新完成请退出容器终端
 echo -e "\033[32m 更新完成，请退出容器终端 \033[0m"
