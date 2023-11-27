@@ -53,7 +53,7 @@ if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
     # 检查是否安装了docker-compose
     if ! command -v docker-compose >/dev/null 2>&1; then
         echo -e "未检测到docker-compose，正在安装docker-compose..."
-        sudo curl -SL "https://gh-proxy.com/https://github.com/docker/compose/releases/download/v2.19.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose > /usr/local/bin/docker-compose
+        sudo curl -SL "https://ghproxy.typecho.ltd/https://github.com/docker/compose/releases/download/v2.19.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose > /usr/local/bin/docker-compose
         chmod +x /usr/local/bin/docker-compose
         echo -e "docker-compose安装完成"
     else
@@ -92,7 +92,7 @@ if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
     # 下载docker-compose.yml 文件
     read -p "${GREEN}是否需要国内服务器加速？(y/n):${NC} " server_location
     if [ "$server_location" == "y" ] || [ "$server_location" == "Y" ]; then
-        wget https://gh-proxy.com/https://raw.githubusercontent.com/zhuchunshu/SForum/master/docker-compose.yml
+        wget https://ghproxy.typecho.ltd/https://raw.githubusercontent.com/zhuchunshu/SForum/master/docker-compose.yml
     else
         wget https://raw.githubusercontent.com/zhuchunshu/SForum/master/docker-compose.yml
     fi
